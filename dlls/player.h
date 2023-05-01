@@ -18,6 +18,9 @@
 
 #include "pm_materials.h"
 
+//START BOT
+class CBotCam;
+//END BOT
 
 #define PLAYER_FATAL_FALL_SPEED		1024// approx 60 feet
 #define PLAYER_MAX_SAFE_FALL_SPEED	580// approx 20 feet
@@ -84,6 +87,16 @@ enum sbar_data
 };
 
 #define CHAT_INTERVAL 1.0f
+
+enum PlayerState
+{
+	STATE_UNINITIALIZED = 0,
+	STATE_CONNECTED,
+	STATE_SPECTATOR_BEGIN,
+	STATE_SPAWNED,
+	STATE_SPECTATOR,
+	STATE_POINT_SELECT
+};
 
 class CBasePlayer : public CBaseMonster
 {
@@ -197,6 +210,10 @@ public:
 	float	m_flNextDecalTime;// next time this player can spray a decal
 
 	char m_szTeamName[TEAM_NAME_LENGTH];
+
+	//START BOT
+	CBotCam *pBotCam;
+	//END BOT
 
 	virtual void Spawn( void );
 	void Pain( void );
@@ -322,6 +339,9 @@ public:
 	char m_SbarString1[ SBAR_STRING_SIZE ];
 	
 	float m_flNextChatTime;
+	
+	virtual BOOL IsBot(){ return false; } 	// We're not bots!
+	PlayerState m_state;					// So write our state! 	
 	
 };
 
